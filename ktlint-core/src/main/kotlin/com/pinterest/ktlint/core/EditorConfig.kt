@@ -11,6 +11,7 @@ interface EditorConfig {
 
     val indentStyle: IndentStyle
     val indentSize: Int
+    val continuationIndentSize: Int
     val tabWidth: Int
     val maxLineLength: Int
     val insertFinalNewline: Boolean
@@ -25,12 +26,16 @@ interface EditorConfig {
             val indentSize = map["indent_size"].let { v ->
                 if (v?.toLowerCase() == "unset") -1 else v?.toIntOrNull() ?: 4
             }
+            val continuationIndentSize = map["continuation_indent_size"].let { v ->
+                if (v?.toLowerCase() == "unset") -1 else v?.toIntOrNull() ?: 8
+            }
             val tabWidth = map["indent_size"]?.toIntOrNull()
             val maxLineLength = map["max_line_length"]?.toIntOrNull() ?: -1
             val insertFinalNewline = map["insert_final_newline"]?.toBoolean() ?: true
             return object : EditorConfig {
                 override val indentStyle = indentStyle
                 override val indentSize = indentSize
+                override val continuationIndentSize: Int = continuationIndentSize
                 override val tabWidth = tabWidth ?: indentSize
                 override val maxLineLength = maxLineLength
                 override val insertFinalNewline = insertFinalNewline
